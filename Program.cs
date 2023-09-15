@@ -3,6 +3,7 @@ using DecoratorPattern.Infrastructure.Data.Contexts;
 using DecoratorPattern.Infrastructure.Data.Repositories.Logger;
 using DecoratorPattern.Infrastructure.Data.Repositories.User;
 using DecoratorPattern.Models;
+using DecoratorPattern.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,30 +13,22 @@ services.AddDbContext<ApplicationContext>(options
 
 services.AddTransient(typeof(ILoggerRepository<,>), typeof(LoggerRepository<,>));
 services.AddTransient<IUserRepository, UserRepository>();
+services.AddTransient<IUserService, UserService>();
 
 //-------------------------------------------------------
 
 var builder = services.BuildServiceProvider();
 
-var loggerRepository = builder.GetRequiredService<ILoggerRepository<User, IUserRepository>>();
-var userRepository = builder.GetRequiredService<IUserRepository>();
+var service = builder.GetRequiredService<IUserService>();
 
-// With decorator
-var id = await loggerRepository.ExecuteAsync(concrete => concrete.AddAsync(new User()
+var id = await service.RegisterAsync(new ()
 {
     Name = "Jhon",
     Email = "jhon@hotmail.com"
-}));
-
-// Without decorator
-var id2 = await userRepository.AddAsync(new User()
-{
-    Name = "Alice",
-    Email = "alice@hotmail.com"
 });
 
-var user = await loggerRepository.ExecuteAsync(concrete => concrete.GetByIdAsync(id2));
+var user = await service.RecoverAsync(id);
 
-var users = await loggerRepository.ExecuteAsync(concrete => concrete.GetAllAsync());
+Console.WriteLine(user.Name);
 
 Console.ReadKey();
