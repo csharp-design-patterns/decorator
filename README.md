@@ -22,7 +22,7 @@ When you want to logger a repository functionality, you going to call the Decora
 
 ### Let's the Code
 
-*** Attention Points: ***
+***Attention Points:***
 * Clean Code: it's important that your code is expressive, mainly the methods. Because, starting they that we are going to generate our message logs
 * SOLID: our classes and methods should have unique responsibilities to make sense of our logs
 * LOG: Logs are for the software engineer's observability and not for the final user or any product stakeholder. So we need to put messages that make sense for the engineering. This is an important thing, but many people forget it.
@@ -43,12 +43,12 @@ public interface IDecoratorLoggerRepository<TEntity, TRepository>
 
 ## Pros and Cons
 
-+ Allow to add new behaviors without changing the original code
-+ Easy to understand
-+ You don't need to use inheritance every time
+➕ Allow to add new behaviors without changing the original code </br>
+➕ Easy to understand </br>
+➕ You don't need to use inheritance every time </br>
 
-- Complexity to debug
-- Complexity when the decorator interfaces is big
+➖ Complexity to debug </br>
+➖ Complexity when the decorator interfaces is big
 
 ---
 
