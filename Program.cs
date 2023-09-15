@@ -23,15 +23,15 @@ var userRepository = builder.GetRequiredService<IUserRepository>();
 // With decorator
 var id = await loggerRepository.ExecuteAsync(concrete => concrete.AddAsync(new User()
 {
-    Name = "Alex Alves",
-    Email = "alexalves2501@hotmail.com"
+    Name = "Jhon",
+    Email = "jhon@hotmail.com"
 }));
 
 // Without decorator
 var id2 = await userRepository.AddAsync(new User()
 {
-    Name = "Alex Alves",
-    Email = "alexalves2501@hotmail.com"
+    Name = "Alice",
+    Email = "alice@hotmail.com"
 });
 
 var user = await loggerRepository.ExecuteAsync(concrete => concrete.GetByIdAsync(id2));
