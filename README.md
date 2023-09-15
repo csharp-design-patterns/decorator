@@ -27,8 +27,20 @@ When you want to logger a repository functionality, you going to call the Decora
 * SOLID: our classes and methods should have unique responsibilities to make sense of our logs
 * LOG: Logs are for the software engineer's observability and not for the final user or any product stakeholder. So we need to put messages that make sense for the engineering. This is an important thing, but many people forget it.
 
-First we need a Decorator class that going to do some behaviors, like this:
+First, let's do our Component which going to contain our original behavior, like this:
+``` csharp
+public interface IRepository<TEntity> 
+    where TEntity : Entity
+{
+    Task<Guid> AddAsync(TEntity entity);
+    Task UpdateAsync(TEntity entity);
+    Task DeleteAsync(TEntity entity);
+    ValueTask<TEntity?> GetByIdAsync(Guid id);
 
+}
+```
+
+Second we need a Decorator class that going to do some behaviors, like below:
 ``` csharp
 public interface IDecoratorLoggerRepository<TEntity, TRepository>
     where TEntity : Entity
@@ -40,6 +52,29 @@ public interface IDecoratorLoggerRepository<TEntity, TRepository>
 }
 ```
 
+Starting this, we allow us to execute any operations of the repository, which is our Component, that we pass in Generics Parameter, including other behaviors:
+
+``` csharp
+private readonly IDecoratorLoggerRepository<User, IUserRepository> _repository;
+
+public async Task<User> RecoverAsync(Guid id)
+{
+    var user = await _repository.ExecuteAsync((concrete, @in) => concrete.GetByIdAsync(@in), id);
+    return user ?? throw new Exception(nameof(User));
+}
+```
+
+Or, we can use the only original class, which is our Component:
+
+``` csharp
+private readonly IUserRepository _userRepository;
+
+public async Task<User> RecoverAsync(Guid id)
+{
+    var user = await _userRepository.GetByIdAsync(id);
+    return user ?? throw new Exception(nameof(User));
+}
+```
 
 ## Pros and Cons
 
