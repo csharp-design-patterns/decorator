@@ -27,6 +27,20 @@ When you want to logger a repository functionality, you going to call the Decora
 * SOLID: our classes and methods should have unique responsibilities to make sense of our logs
 * LOG: Logs are for the software engineer's observability and not for the final user or any product stakeholder. So we need to put messages that make sense for the engineering. This is an important thing, but many people forget it.
 
+First we need a Decorator class that going to do some behaviors, like this:
+
+``` csharp
+public interface IDecoratorLoggerRepository<TEntity, TRepository>
+    where TEntity : Entity
+    where TRepository : IRepository<TEntity>
+{
+    Task<TOut> ExecuteAsync<TIn, TOut>(Expression<Func<TRepository, TIn, Task<TOut>>> execute, TIn @in);
+    Task ExecuteAsync<TIn>(Expression<Func<TRepository, TIn, Task>> execute, TIn @in);
+    ValueTask<TOut?> ExecuteAsync<TIn, TOut>(Expression<Func<TRepository, TIn, ValueTask<TOut?>>> execute,TIn @in);
+}
+```
+
+
 ## Pros and Cons
 
 + Allow to add new behaviors without changing the original code

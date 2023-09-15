@@ -11,7 +11,7 @@ var services = new ServiceCollection();
 services.AddDbContext<ApplicationContext>(options 
     => options.UseInMemoryDatabase("decorator_pattern"));
 
-services.AddTransient(typeof(ILoggerRepository<,>), typeof(LoggerRepository<,>));
+services.AddTransient(typeof(IDecoratorLoggerRepository<,>), typeof(DecoratorLoggerRepository<,>));
 services.AddTransient<IUserRepository, UserRepository>();
 services.AddTransient<IUserService, UserService>();
 
